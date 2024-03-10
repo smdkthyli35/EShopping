@@ -75,19 +75,19 @@ namespace Catalog.Infrastructure.Repositories
 
             if (!string.IsNullOrEmpty(catalogSpecParams.Search))
             {
-                var searchFilter = builder.Regex(x => x.Name, new BsonRegularExpression(catalogSpecParams.Search));
+                var searchFilter = builder.Eq(x => x.Name, catalogSpecParams.Search);
                 filter &= searchFilter;
             }
 
             if (!string.IsNullOrEmpty(catalogSpecParams.BrandId))
             {
-                var brandFilter = builder.Regex(x => x.Brands.Id, new BsonRegularExpression(catalogSpecParams.BrandId));
+                var brandFilter = builder.Eq(x => x.Brands.Id, catalogSpecParams.BrandId);
                 filter &= brandFilter;
             }
 
             if (!string.IsNullOrEmpty(catalogSpecParams.TypeId))
             {
-                var typesFilter = builder.Regex(x => x.Types.Id, new BsonRegularExpression(catalogSpecParams.TypeId));
+                var typesFilter = builder.Eq(x => x.Types.Id, catalogSpecParams.TypeId);
                 filter &= typesFilter;
             }
 
