@@ -1,6 +1,7 @@
 ﻿using Catalog.Application.Mappers;
 using Catalog.Application.Responses;
 using Catalog.Core.Repositories;
+using Catalog.Core.Specs;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Catalog.Application.Features.Queries.Products.GetAllProducts
 {
-    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IList<ProductResponse>>
+    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, Pagination<ProductResponse>>
     {
         private readonly IProductRepository _productRepository;
 
@@ -19,10 +20,10 @@ namespace Catalog.Application.Features.Queries.Products.GetAllProducts
             _productRepository = productRepository;
         }
 
-        public async Task<IList<ProductResponse>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        public async Task<Pagination<ProductResponse>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            var productList = await _productRepository.GetProducts();
-            var productResponseList = ProductMapper.Mapper.Map<IList<ProductResponse>>(productList);
+            var productList = await _productRepository.GetProducts(request.CatalogSpecParams);
+            var productResponseList = ProductMapper.Mapper.Map<Pagination<ProductResponse>>(productList);
             return productResponseList;
         }
     }
